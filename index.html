@@ -14,19 +14,16 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--tg-theme-bg-color, #f5f5f5);
-            color: var(--tg-theme-text-color, #333);
         }
 
-        /* ЗАГРУЗОЧНЫЙ ЭКРАН С РАДУГОЙ И ПАРОМ */
+        /* ЗАГРУЗОЧНЫЙ ЭКРАН С DRAG 3 */
         .splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
-            background-size: 400% 400%;
-            animation: rainbow 10s ease infinite;
+            background: linear-gradient(145deg, #1a1e2b 0%, #2d3349 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -39,174 +36,303 @@
             pointer-events: none;
         }
 
-        @keyframes rainbow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .vape-container {
+        .drag3-container {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 320px;
+            height: 600px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        .logo {
+        /* КОРПУС ВЕЙПА */
+        .vape-device {
             position: relative;
-            z-index: 20;
-            text-align: center;
-            animation: pulse 2s ease-in-out infinite;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 30px 50px;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 50px rgba(255,255,255,0.3);
-        }
-
-        .logo h1 {
-            font-size: 52px;
-            font-weight: 900;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            text-shadow: 
-                0 0 20px rgba(255,255,255,0.8),
-                2px 2px 0 #ff0000,
-                4px 4px 0 #ff7f00,
-                6px 6px 0 #ffff00,
-                8px 8px 0 #00ff00,
-                10px 10px 0 #0000ff,
-                12px 12px 0 #4b0082,
-                14px 14px 0 #8f00ff;
-            margin-bottom: 10px;
-        }
-
-        .logo p {
-            color: white;
-            font-size: 18px;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-
-        .smoke {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-        }
-
-        .smoke-particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            filter: blur(15px);
-            animation: rise 8s infinite ease-in-out;
-        }
-
-        .smoke-particle:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            left: 10%;
-            bottom: -10%;
-            background: rgba(255, 255, 255, 0.2);
-            filter: blur(20px);
-            animation-delay: 0s;
-        }
-
-        .smoke-particle:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            left: 30%;
-            bottom: -20%;
-            background: rgba(255, 255, 255, 0.25);
-            filter: blur(25px);
-            animation-delay: 2s;
-        }
-
-        .smoke-particle:nth-child(3) {
-            width: 180px;
-            height: 180px;
-            left: 50%;
-            bottom: -15%;
-            background: rgba(255, 255, 255, 0.15);
-            filter: blur(18px);
-            animation-delay: 4s;
-        }
-
-        .smoke-particle:nth-child(4) {
             width: 220px;
-            height: 220px;
-            left: 70%;
-            bottom: -25%;
-            background: rgba(255, 255, 255, 0.2);
-            filter: blur(22px);
-            animation-delay: 1s;
+            height: 420px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            border-radius: 40px 40px 60px 60px;
+            box-shadow: 
+                0 30px 40px rgba(0,0,0,0.6),
+                inset 0 -5px 10px rgba(0,0,0,0.8),
+                inset 0 5px 15px rgba(255,255,255,0.1);
+            border: 2px solid #4a5568;
         }
 
-        .smoke-particle:nth-child(5) {
-            width: 120px;
-            height: 120px;
-            left: 85%;
-            bottom: -5%;
-            background: rgba(255, 255, 255, 0.3);
-            filter: blur(15px);
-            animation-delay: 3s;
+        /* ВСТАВКИ ПО БОКАМ */
+        .vape-device::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: -5px;
+            width: 10px;
+            height: 200px;
+            background: linear-gradient(90deg, #4a5568, #718096);
+            border-radius: 5px 0 0 5px;
+            box-shadow: inset -2px 0 5px rgba(0,0,0,0.5);
         }
 
-        @keyframes rise {
-            0% {
-                transform: translateY(0) translateX(0) scale(1);
-                opacity: 0;
-            }
-            10% {
+        .vape-device::after {
+            content: '';
+            position: absolute;
+            top: 60px;
+            right: -5px;
+            width: 10px;
+            height: 200px;
+            background: linear-gradient(90deg, #718096, #4a5568);
+            border-radius: 0 5px 5px 0;
+            box-shadow: inset 2px 0 5px rgba(0,0,0,0.5);
+        }
+
+        /* ДИСПЛЕЙ */
+        .vape-screen {
+            position: absolute;
+            top: 40px;
+            left: 25px;
+            right: 25px;
+            height: 140px;
+            background: #0f172a;
+            border-radius: 20px;
+            border: 3px solid #4a5568;
+            box-shadow: inset 0 0 20px rgba(0,255,0,0.2);
+            overflow: hidden;
+        }
+
+        .screen-content {
+            padding: 15px;
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px #4ade80;
+        }
+
+        /* ЗНАЧОК БАТАРЕИ */
+        .battery-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 30px;
+            height: 15px;
+            border: 2px solid #4ade80;
+            border-radius: 3px;
+        }
+
+        .battery-icon::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 3px;
+            width: 3px;
+            height: 5px;
+            background: #4ade80;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .battery-level {
+            height: 100%;
+            width: 85%;
+            background: #4ade80;
+            animation: batteryPulse 3s infinite;
+        }
+
+        @keyframes batteryPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ОСНОВНОЙ ДИСПЛЕЙ С ВАТТАМИ */
+        .watts-display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 25px;
+            font-family: 'Courier New', monospace;
+            color: #4ade80;
+            text-shadow: 0 0 15px #4ade80;
+            letter-spacing: 2px;
+        }
+
+        .watts-unit {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        /* ПРОГРЕСС-БАР */
+        .progress-container {
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #4a5568;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4ade80, #fbbf24, #ef4444);
+            transition: width 0.1s linear;
+            box-shadow: 0 0 15px #4ade80;
+        }
+
+        /* КНОПКА FIRE */
+        .fire-button {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #dc2626, #b91c1c);
+            border-radius: 50%;
+            box-shadow: 
+                0 10px 0 #7f1d1d,
+                0 15px 20px rgba(0,0,0,0.4),
+                inset 0 -3px 5px rgba(0,0,0,0.5),
+                inset 0 3px 5px rgba(255,255,255,0.3);
+            cursor: pointer;
+            animation: firePulse 1s infinite;
+        }
+
+        @keyframes firePulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        .fire-button::after {
+            content: '⚡';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 30px;
+            text-shadow: 0 0 15px yellow;
+        }
+
+        /* КНОПКИ РЕГУЛИРОВКИ */
+        .adjust-buttons {
+            position: absolute;
+            right: -15px;
+            top: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .plus-btn, .minus-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #4b5563, #374151);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 
+                3px 3px 5px rgba(0,0,0,0.5),
+                inset -1px -1px 2px rgba(0,0,0,0.5),
+                inset 1px 1px 2px rgba(255,255,255,0.2);
+        }
+
+        .plus-btn.active {
+            background: linear-gradient(145deg, #fbbf24, #d97706);
+            box-shadow: 0 0 20px #fbbf24;
+        }
+
+        /* ДРИПКА (МУНДШТУК) */
+        .vape-tip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 50px;
+            background: linear-gradient(145deg, #4b5563, #1f2937);
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: inset 0 -5px 5px rgba(0,0,0,0.5);
+        }
+
+        .vape-tip::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background: #374151;
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 5px black;
+        }
+
+        /* ПАР */
+        .vapor {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0;
+            animation: vaporPuff 2s infinite;
+        }
+
+        .vapor.active {
+            opacity: 0.8;
+            animation: vaporRise 1s infinite;
+        }
+
+        @keyframes vaporRise {
+            0% { 
+                transform: translateX(-50%) translateY(0) scale(1);
                 opacity: 0.8;
             }
-            50% {
-                transform: translateY(-200px) translateX(30px) scale(1.5);
-                opacity: 0.4;
-            }
-            100% {
-                transform: translateY(-350px) translateX(-20px) scale(2);
+            100% { 
+                transform: translateX(-50%) translateY(-100px) scale(3);
                 opacity: 0;
             }
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 50px rgba(255,255,255,0.3);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 80px rgba(255,255,255,0.6);
-            }
+        /* БРЕНДИНГ */
+        .brand-text {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 
+                0 0 10px #4ade80,
+                2px 2px 0 #dc2626;
+            opacity: 0.8;
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ */
+        /* ОСНОВНОЙ КОНТЕНТ (МАГАЗИН) */
         .main-content {
             opacity: 0;
             transition: opacity 0.5s ease;
             padding: 15px;
-            padding-bottom: 100px;
         }
 
         .main-content.visible {
             opacity: 1;
         }
 
-        /* Стили магазина */
         .header {
             text-align: center;
             margin-bottom: 20px;
             padding: 20px;
-            background: var(--tg-theme-secondary-bg-color, white);
+            background: white;
             border-radius: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
@@ -218,48 +344,14 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .cart-icon {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--tg-theme-button-color, #40a7e3);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 100;
-            cursor: pointer;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
-            width: 22px;
-            height: 22px;
-            border-radius: 11px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .products {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 20px;
         }
 
         .product-card {
-            background: var(--tg-theme-secondary-bg-color, white);
+            background: white;
             border-radius: 20px;
             padding: 15px;
             display: flex;
@@ -288,228 +380,101 @@
             font-weight: bold;
         }
 
-        .product-nic {
-            font-size: 14px;
-            color: #666;
-            margin: 5px 0;
-        }
-
         .product-price {
             font-size: 22px;
             font-weight: bold;
-            color: var(--tg-theme-button-color, #40a7e3);
+            color: #40a7e3;
         }
 
         .add-to-cart {
-            background: var(--tg-theme-button-color, #40a7e3);
-            color: var(--tg-theme-button-text-color, white);
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #4CAF50;
+            background: #40a7e3;
             color: white;
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-size: 16px;
-            z-index: 2000;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        /* Модальное окно корзины */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: flex-end;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--tg-theme-secondary-bg-color, white);
-            width: 100%;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            padding: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .modal-header h2 {
-            font-size: 24px;
-        }
-
-        .close-btn {
-            font-size: 30px;
-            cursor: pointer;
-            opacity: 0.7;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-title {
-            font-weight: bold;
-        }
-
-        .cart-item-price {
-            color: var(--tg-theme-button-color, #40a7e3);
-            font-weight: bold;
-        }
-
-        .remove-btn {
-            color: red;
-            font-size: 20px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            padding: 15px 0;
-            font-size: 20px;
-            font-weight: bold;
-            border-top: 2px solid #eee;
-        }
-
-        .checkout-btn {
-            background: var(--tg-theme-button-color, #40a7e3);
-            color: var(--tg-theme-button-text-color, white);
             border: none;
-            padding: 18px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            width: 100%;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
             cursor: pointer;
-            margin: 10px 0;
-        }
-
-        .clear-btn {
-            background: transparent;
-            color: #999;
-            border: 1px solid #ddd;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 16px;
             width: 100%;
-            cursor: pointer;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-            font-size: 18px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- ЗАГРУЗОЧНЫЙ ЭКРАН -->
+    <!-- ЗАГРУЗОЧНЫЙ ЭКРАН С DRAG 3 -->
     <div class="splash-screen" id="splash">
-        <div class="vape-container">
-            <!-- Пар -->
-            <div class="smoke">
-                <div class="smoke-particle"></div>
-                <div class="smoke-particle"></div>
-                <div class="smoke-particle"></div>
-                <div class="smoke-particle"></div>
-                <div class="smoke-particle"></div>
+        <div class="drag3-container">
+            <div class="vape-device">
+                <!-- Дрипка -->
+                <div class="vape-tip">
+                    <div class="vapor" id="vaporEffect"></div>
+                </div>
+
+                <!-- Дисплей -->
+                <div class="vape-screen">
+                    <div class="screen-content">
+                        <!-- Иконка батареи -->
+                        <div class="battery-icon">
+                            <div class="battery-level"></div>
+                        </div>
+                        
+                        <!-- Ватты -->
+                        <div class="watts-display" id="wattsDisplay">
+                            0<span class="watts-unit">W</span>
+                        </div>
+                        
+                        <!-- Прогресс бар -->
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+
+                        <!-- Доп инфо -->
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px;">
+                            <span>0.00Ω</span>
+                            <span>4.2V</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка fire -->
+                <div class="fire-button"></div>
+
+                <!-- Кнопки регулировки -->
+                <div class="adjust-buttons">
+                    <div class="plus-btn" id="plusBtn">+</div>
+                    <div class="minus-btn">-</div>
+                </div>
             </div>
-            
-            <!-- Логотип -->
-            <div class="logo">
-                <h1>VAPESHOP</h1>
-                <p>💨 PREMIUM VAPE</p>
-            </div>
+
+            <!-- Бренд -->
+            <div class="brand-text">DRAG 3</div>
         </div>
     </div>
 
     <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="main-content" id="mainContent">
-        <div class="notification" id="notification">✅ Товар добавлен в корзину!</div>
-
-        <div class="cart-icon" onclick="openCart()">
-            🛒
-            <span class="cart-count" id="cartCount">0</span>
-        </div>
-
         <div class="header">
             <h1>VAPE SHOP 💨</h1>
-            <p>Премиальные жидкости для вейпа</p>
+            <p>Премиальные жидкости</p>
         </div>
 
-        <div class="products" id="products"></div>
-
-        <!-- Модальное окно корзины -->
-        <div class="modal" id="cartModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>🛒 Корзина</h2>
-                    <span class="close-btn" onclick="closeCart()">×</span>
+        <div class="products">
+            <div class="product-card">
+                <div class="product-image">🫐</div>
+                <div class="product-info">
+                    <div class="product-title">Blueberry Ice</div>
+                    <div class="product-price">450 ₽</div>
+                    <button class="add-to-cart">Добавить</button>
                 </div>
-                
-                <div id="cartItems"></div>
-                
-                <div class="cart-total">
-                    <span>Итого:</span>
-                    <span id="modalTotal">0 ₽</span>
+            </div>
+            <div class="product-card">
+                <div class="product-image">🥭</div>
+                <div class="product-info">
+                    <div class="product-title">Mango Passion</div>
+                    <div class="product-price">650 ₽</div>
+                    <button class="add-to-cart">Добавить</button>
                 </div>
-                
-                <button class="checkout-btn" onclick="checkout()">
-                    ✅ Оформить заказ
-                </button>
-                
-                <button class="clear-btn" onclick="clearCart()">
-                    🗑 Очистить корзину
-                </button>
             </div>
         </div>
     </div>
@@ -518,171 +483,53 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Показываем загрузку 3 секунды
-        setTimeout(() => {
-            document.getElementById('splash').classList.add('hidden');
-            document.getElementById('mainContent').classList.add('visible');
-        }, 3000);
+        // АНИМАЦИЯ ЗАГРУЗКИ
+        let watts = 0;
+        const targetWatts = 100;
+        const duration = 5000; // 5 секунд
+        const interval = 50; // обновление каждые 50мс
+        const steps = duration / interval;
+        const increment = targetWatts / steps;
 
-        // Товары
-        const products = [
-            { id: 1, name: "Blueberry Ice", nic: "3mg / 50ml", price: 450, image: "🫐" },
-            { id: 2, name: "Mango Passion", nic: "6mg / 100ml", price: 650, image: "🥭" },
-            { id: 3, name: "Strawberry Kiwi", nic: "0mg / 60ml", price: 500, image: "🍓" },
-            { id: 4, name: "Watermelon Mint", nic: "3mg / 120ml", price: 750, image: "🍉" }
-        ];
+        const wattsDisplay = document.getElementById('wattsDisplay');
+        const progressFill = document.getElementById('progressFill');
+        const vaporEffect = document.getElementById('vaporEffect');
+        const plusBtn = document.getElementById('plusBtn');
 
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            updateModalCart();
-        }
-
-        function showNotification(text) {
-            const notification = document.getElementById('notification');
-            notification.textContent = text;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 2000);
-        }
-
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            cart.push(product);
-            saveCart();
-            showNotification('✅ Товар добавлен в корзину!');
+        let timer = setInterval(() => {
+            watts += increment;
             
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            saveCart();
-            updateModalCart();
-            showNotification('🗑 Товар удален');
-        }
-
-        function clearCart() {
-            if (cart.length === 0) return;
-            
-            if (confirm('Очистить корзину?')) {
-                cart = [];
-                saveCart();
-                updateModalCart();
-                showNotification('🗑 Корзина очищена');
-            }
-        }
-
-        function updateCartCount() {
-            document.getElementById('cartCount').textContent = cart.length;
-        }
-
-        function getTotal() {
-            return cart.reduce((sum, item) => sum + item.price, 0);
-        }
-
-        function openCart() {
-            document.getElementById('cartModal').classList.add('active');
-            updateModalCart();
-        }
-
-        function closeCart() {
-            document.getElementById('cartModal').classList.remove('active');
-        }
-
-        function updateModalCart() {
-            const cartItemsDiv = document.getElementById('cartItems');
-            const modalTotal = document.getElementById('modalTotal');
-            
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<div class="empty-cart">🛒 Корзина пуста</div>';
-                modalTotal.textContent = '0 ₽';
-                return;
+            if (watts >= targetWatts) {
+                watts = targetWatts;
+                clearInterval(timer);
+                
+                // Завершение загрузки
+                setTimeout(() => {
+                    document.getElementById('splash').classList.add('hidden');
+                    document.getElementById('mainContent').classList.add('visible');
+                    
+                    // Тактильная отдача
+                    if (tg.HapticFeedback) {
+                        tg.HapticFeedback.notificationOccurred('success');
+                    }
+                }, 500);
             }
 
-            let html = '';
-            cart.forEach((item, index) => {
-                html += `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-nic">${item.nic}</div>
-                        </div>
-                        <div class="cart-item-price">${item.price} ₽</div>
-                        <div class="remove-btn" onclick="removeFromCart(${index})">×</div>
-                    </div>
-                `;
-            });
-            
-            cartItemsDiv.innerHTML = html;
-            modalTotal.textContent = getTotal() + ' ₽';
-        }
+            // Обновление дисплея
+            wattsDisplay.innerHTML = Math.floor(watts) + '<span class="watts-unit">W</span>';
+            progressFill.style.width = (watts / targetWatts * 100) + '%';
 
-        function checkout() {
-            if (cart.length === 0) {
-                tg.showAlert('Корзина пуста!');
-                return;
+            // Эффекты в зависимости от ватт
+            if (watts > 80) {
+                vaporEffect.classList.add('active');
+                plusBtn.classList.add('active');
             }
 
-            const total = getTotal();
-            
-            // Отправляем данные боту
-            tg.sendData(JSON.stringify({
-                type: 'order',
-                items: cart,
-                total: total
-            }));
-
-            tg.showAlert('✅ Заказ отправлен! Мы свяжемся с вами');
-
-            cart = [];
-            saveCart();
-            closeCart();
-
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.notificationOccurred('success');
+            // Вибрация на телефоне при достижении 100%
+            if (Math.floor(watts) === 100 && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('heavy');
             }
-        }
 
-        function renderProducts() {
-            const container = document.getElementById('products');
-            container.innerHTML = '';
-
-            products.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div class="product-image">${product.image}</div>
-                    <div class="product-info">
-                        <div>
-                            <div class="product-title">${product.name}</div>
-                            <div class="product-nic">${product.nic}</div>
-                            <div class="product-price">${product.price} ₽</div>
-                        </div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">
-                            Добавить в корзину
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Закрывать модалку по клику вне её
-        document.getElementById('cartModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeCart();
-            }
-        });
-
-        // Запуск
-        renderProducts();
-        updateCartCount();
+        }, interval);
     </script>
 </body>
-</html>
