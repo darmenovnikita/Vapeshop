@@ -41,8 +41,9 @@
             position: relative;
             width: 100%;
             max-width: 400px;
-            height: 400px;
+            height: 500px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -54,6 +55,7 @@
             opacity: 0;
             transform: scale(0.9);
             animation: logoAppear 2.5s ease forwards;
+            margin-bottom: 30px;
         }
 
         .logo h1 {
@@ -78,6 +80,44 @@
         @keyframes logoAppear {
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ПЛАВАЮЩИЙ НИК */
+        .floating-nick {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-top: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .nick-name {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255,107,107,0.5);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .real-name {
+            font-size: 16px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                text-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+            }
+            50% {
+                transform: translateY(-15px) scale(1.05);
+                text-shadow: 0 0 40px rgba(255, 107, 107, 0.8);
+            }
         }
 
         .smoke {
@@ -137,7 +177,7 @@
 
         .progress {
             position: absolute;
-            bottom: 50px;
+            bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
             width: 200px;
@@ -151,7 +191,7 @@
             width: 0%;
             height: 100%;
             background: linear-gradient(90deg, #4a90e2, #9b59b6);
-            animation: progress 3s ease forwards;
+            animation: progress 5s ease forwards;
         }
 
         @keyframes progress {
@@ -652,10 +692,18 @@
                 <div class="smoke-particle"></div>
                 <div class="smoke-particle"></div>
             </div>
+            
             <div class="logo">
                 <h1>VAPE</h1>
                 <p>PREMIUM</p>
             </div>
+
+            <!-- ПЛАВАЮЩИЙ НИК -->
+            <div class="floating-nick">
+                <div class="nick-name">Sugar_Raphinad</div>
+                <div class="real-name">Gutswitch</div>
+            </div>
+
             <div class="progress">
                 <div class="progress-bar"></div>
             </div>
@@ -827,7 +875,7 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Загрузка 3 секунды
+        // Загрузка 5 секунд (было 3)
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             document.getElementById('mainContent').classList.add('visible');
@@ -835,7 +883,7 @@
             if (tg.HapticFeedback) {
                 tg.HapticFeedback.notificationOccurred('success');
             }
-        }, 3000);
+        }, 5000); // 5000ms = 5 секунд
 
         // Данные пользователя из Telegram
         let user = tg.initDataUnsafe?.user || {};
@@ -1091,4 +1139,4 @@
         updateModalCart();
     </script>
 </body>
-    </html>
+                                             </html>
