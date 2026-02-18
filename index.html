@@ -10,25 +10,30 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--tg-theme-bg-color, #1a1e2b);
+            background: #0a0a0a;
         }
 
-        /* ЗАГРУЗОЧНЫЙ ЭКРАН */
+        /* ЗАГРУЗОЧНЫЙ ЭКРАН С ГЛАЗОМ */
         .splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(145deg, #0f0f1a 0%, #1f1f2e 100%);
+            background: #1a1a1a;
+            background-image: 
+                radial-gradient(circle at 30% 40%, #2a2a2a 2px, transparent 2px),
+                radial-gradient(circle at 70% 60%, #2a2a2a 2px, transparent 2px),
+                radial-gradient(circle at 45% 80%, #2a2a2a 2px, transparent 2px);
+            background-size: 50px 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.8s;
+            transition: opacity 0.5s;
         }
 
         .splash-screen.hidden {
@@ -36,236 +41,249 @@
             pointer-events: none;
         }
 
-        /* DRAG 3 - ТОЧНАЯ КОПИЯ */
-        .drag3-device {
+        /* КОНТЕЙНЕР ДЛЯ ГЛАЗА */
+        .eye-container {
             position: relative;
-            width: 280px;
-            height: 520px;
-            background: linear-gradient(145deg, #2a2a3a, #1a1a28);
-            border-radius: 50px 50px 70px 70px;
-            box-shadow: 
-                0 30px 40px rgba(0,0,0,0.8),
-                inset 0 -5px 15px rgba(0,0,0,0.9),
-                inset 0 5px 15px rgba(255,255,255,0.1);
-            border: 1px solid #3a3a4a;
-        }
-
-        /* КАРБОНОВАЯ ВСТАВКА */
-        .carbon-panel {
-            position: absolute;
-            top: 80px;
-            left: 15px;
-            right: 15px;
-            height: 260px;
-            background: linear-gradient(45deg, 
-                #1e1e2a 0%, 
-                #2a2a3a 25%, 
-                #1e1e2a 50%, 
-                #2a2a3a 75%, 
-                #1e1e2a 100%);
-            background-size: 50px 50px;
-            border-radius: 30px;
-            border: 2px solid #4a4a5a;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        }
-
-        /* ДИСПЛЕЙ DRAG 3 */
-        .drag-display {
-            position: absolute;
-            top: 110px;
-            left: 35px;
-            width: 190px;
-            height: 130px;
-            background: #0a0a12;
-            border-radius: 20px;
-            border: 3px solid #5a5a6a;
-            box-shadow: 
-                inset 0 0 30px rgba(74, 222, 128, 0.3),
-                0 10px 20px rgba(0,0,0,0.5);
-            overflow: hidden;
-            padding: 15px 10px;
-        }
-
-        /* ЗАСТАВКА VOOPOO */
-        .brand-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #4ade80;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #4ade80;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-
-        .voopoo-logo {
-            color: #fbbf24;
-        }
-
-        /* ОСНОВНЫЕ ВАТТЫ */
-        .power-display {
-            text-align: center;
-            margin: 5px 0;
-        }
-
-        .watts-number {
-            font-size: 56px;
-            font-weight: 900;
-            color: #4ade80;
-            text-shadow: 0 0 20px #4ade80;
-            font-family: 'Courier New', monospace;
-            line-height: 1;
-        }
-
-        .watts-label {
-            font-size: 14px;
-            color: #fbbf24;
-            letter-spacing: 2px;
-            margin-top: -5px;
-        }
-
-        /* ИНФОРМАЦИОННАЯ СТРОКА */
-        .info-row {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-            color: #4ade80;
-            font-size: 12px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .info-item {
-            text-align: center;
-        }
-
-        .info-value {
-            font-weight: bold;
-            font-size: 14px;
-            color: #fbbf24;
-        }
-
-        /* КНОПКИ УПРАВЛЕНИЯ */
-        .control-buttons {
-            position: absolute;
-            right: -15px;
-            top: 200px;
+            width: 300px;
+            height: 300px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        .ctrl-btn {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(145deg, #3a3a4a, #2a2a3a);
-            border-radius: 12px;
-            display: flex;
             align-items: center;
             justify-content: center;
-            color: #fbbf24;
-            font-size: 24px;
-            font-weight: bold;
+        }
+
+        /* САМ ГЛАЗ (ЗАКРЫТ) */
+        .eye-closed {
+            width: 200px;
+            height: 100px;
+            background: #2d1a1a;
+            border-radius: 100px / 50px;
+            position: relative;
+            overflow: hidden;
             box-shadow: 
-                3px 3px 5px rgba(0,0,0,0.8),
-                inset -1px -1px 2px rgba(0,0,0,0.5),
-                inset 1px 1px 2px rgba(255,255,255,0.1);
-            border: 1px solid #5a5a6a;
+                0 0 30px rgba(255, 0, 0, 0.3),
+                inset 0 0 30px #8b0000;
+            border: 2px solid #4a0000;
+            animation: twitch 4s infinite;
         }
 
-        .ctrl-btn.up.active {
-            background: linear-gradient(145deg, #fbbf24, #d97706);
-            color: #000;
-            box-shadow: 0 0 30px #fbbf24;
-        }
-
-        /* КНОПКА FIRE */
-        .fire-btn {
+        /* ВЕКО */
+        .eyelid {
             position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle at 30% 30%, #ef4444, #b91c1c);
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #2d1a1a;
             border-radius: 50%;
-            box-shadow: 
-                0 15px 0 #7f1d1d,
-                0 20px 30px rgba(0,0,0,0.8),
-                inset 0 -5px 10px rgba(0,0,0,0.8),
-                inset 0 5px 15px rgba(255,255,255,0.3);
-            border: 2px solid #fbbf24;
-            cursor: pointer;
-            animation: firePulse 1.5s infinite;
+            filter: blur(5px);
         }
 
-        @keyframes firePulse {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.05); }
+        /* ГЛАЗ ОТКРЫТЫЙ */
+        .eye-open {
+            width: 220px;
+            height: 140px;
+            background: #fff0e0;
+            border-radius: 50% 50% 45% 45%;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #4a0000;
+            box-shadow: 0 0 50px #ff0000;
+            display: none;
         }
 
-        .fire-btn::after {
-            content: '⚡';
+        .eye-open.visible {
+            display: block;
+        }
+
+        /* РАДУЖКА */
+        .iris {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: white;
-            font-size: 40px;
-            text-shadow: 0 0 20px #fbbf24;
-        }
-
-        /* USB ПОРТ */
-        .usb-port {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 10px;
-            background: #4a4a5a;
-            border-radius: 3px;
-            border: 1px solid #5a5a6a;
-        }
-
-        /* ПАР */
-        .vapor-cloud {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            filter: blur(20px);
+            width: 70px;
+            height: 70px;
+            background: #8b0000;
             border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
+            border: 3px solid #330000;
+            box-shadow: inset 0 0 30px #ff4444;
         }
 
-        .vapor-cloud.active {
-            animation: vapor 1.5s infinite;
-        }
-
-        @keyframes vapor {
-            0% { opacity: 0; transform: translateX(-50%) translateY(0) scale(1); }
-            50% { opacity: 0.8; transform: translateX(-50%) translateY(-60px) scale(3); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-120px) scale(5); }
-        }
-
-        /* ЛОГОТИП DRAG */
-        .drag-logo {
+        /* ЗРАЧОК */
+        .pupil {
             position: absolute;
-            top: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #000;
+        }
+
+        /* КРОВАВЫЕ СОСУДЫ */
+        .veins {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .vein {
+            position: absolute;
+            background: #8b0000;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.6;
+        }
+
+        .vein:nth-child(1) {
+            width: 100px;
+            height: 5px;
+            top: 30px;
+            left: 20px;
+            transform: rotate(15deg);
+            background: linear-gradient(90deg, #8b0000, #ff4444);
+        }
+
+        .vein:nth-child(2) {
+            width: 120px;
+            height: 4px;
+            top: 70px;
+            right: 10px;
+            transform: rotate(-10deg);
+            background: linear-gradient(90deg, #ff4444, #8b0000);
+        }
+
+        .vein:nth-child(3) {
+            width: 80px;
+            height: 6px;
+            bottom: 30px;
+            left: 30px;
+            transform: rotate(45deg);
+            background: #8b0000;
+        }
+
+        .vein:nth-child(4) {
+            width: 150px;
+            height: 3px;
+            top: 90px;
+            left: -20px;
+            transform: rotate(25deg);
+            background: linear-gradient(90deg, #ff4444, #8b0000);
+        }
+
+        .vein:nth-child(5) {
+            width: 60px;
+            height: 4px;
+            bottom: 50px;
             right: 30px;
-            color: #fbbf24;
-            font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.8;
+            transform: rotate(-20deg);
+            background: #8b0000;
+        }
+
+        /* КРОВАВАЯ СЛЕЗА */
+        .tear {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #8b0000;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0;
+            animation: tearDrop 2s infinite;
+        }
+
+        .tear.active {
+            opacity: 1;
+        }
+
+        .tear::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 5px;
+            width: 10px;
+            height: 30px;
+            background: #8b0000;
+            border-radius: 5px;
+            filter: blur(3px);
+        }
+
+        .tear-stream {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 0;
+            background: linear-gradient(180deg, #ff4444, #8b0000);
+            border-radius: 4px;
+            filter: blur(2px);
+            opacity: 0;
+            transition: height 0.3s;
+        }
+
+        .tear-stream.active {
+            opacity: 1;
+            height: 150px;
+        }
+
+        /* КРОВАВЫЕ КАПЛИ */
+        .blood-drops {
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .blood-drop {
+            width: 10px;
+            height: 15px;
+            background: #8b0000;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0;
+            animation: drip 2s infinite;
+        }
+
+        .blood-drop:nth-child(1) { animation-delay: 0.2s; }
+        .blood-drop:nth-child(2) { animation-delay: 0.4s; }
+        .blood-drop:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes tearDrop {
+            0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(30px) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes drip {
+            0% { transform: translateY(0); opacity: 0.8; }
+            100% { transform: translateY(50px); opacity: 0; }
+        }
+
+        @keyframes twitch {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.02); }
+            50% { transform: scale(0.98); }
+        }
+
+        .shake {
+            animation: shake 0.3s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 2px); }
+            75% { transform: translate(5px, -2px); }
         }
 
         /* ОСНОВНОЙ КОНТЕНТ */
@@ -286,12 +304,11 @@
             padding: 20px;
             background: #2a2a3a;
             border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .header h1 {
             font-size: 28px;
-            background: linear-gradient(135deg, #4ade80 0%, #fbbf24 100%);
+            background: linear-gradient(135deg, #ff4444 0%, #8b0000 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -308,18 +325,18 @@
             padding: 15px;
             display: flex;
             gap: 15px;
-            border: 1px solid #4a4a5a;
+            border: 1px solid #4a0000;
         }
 
         .product-image {
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #4ade80 0%, #fbbf24 100%);
+            background: linear-gradient(135deg, #ff4444 0%, #8b0000 100%);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #0a0a12;
+            color: white;
             font-size: 40px;
         }
 
@@ -330,29 +347,22 @@
         .product-title {
             font-size: 18px;
             font-weight: bold;
-            color: #4ade80;
-        }
-
-        .product-nic {
-            font-size: 14px;
-            color: #a0a0b0;
-            margin: 5px 0;
+            color: #ff4444;
         }
 
         .product-price {
             font-size: 22px;
             font-weight: bold;
-            color: #fbbf24;
+            color: #8b0000;
         }
 
         .add-to-cart {
-            background: #4ade80;
-            color: #0a0a12;
+            background: #8b0000;
+            color: white;
             border: none;
             padding: 12px;
             border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
@@ -360,83 +370,52 @@
     </style>
 </head>
 <body>
-    <!-- ЗАГРУЗОЧНЫЙ ЭКРАН -->
     <div class="splash-screen" id="splash">
-        <div class="drag3-device">
-            <!-- Карбоновая вставка -->
-            <div class="carbon-panel"></div>
-            
-            <!-- Логотип Drag -->
-            <div class="drag-logo">DRAG 3</div>
-            
-            <!-- Дисплей -->
-            <div class="drag-display" id="display">
-                <div class="brand-header">
-                    <span>VOOPOO</span>
-                    <span class="voopoo-logo">⚡DRAG</span>
+        <div class="eye-container">
+            <!-- ЗАКРЫТЫЙ ГЛАЗ -->
+            <div class="eye-closed" id="closedEye">
+                <div class="eyelid"></div>
+            </div>
+
+            <!-- ОТКРЫТЫЙ ГЛАЗ -->
+            <div class="eye-open" id="openEye">
+                <div class="veins">
+                    <div class="vein"></div>
+                    <div class="vein"></div>
+                    <div class="vein"></div>
+                    <div class="vein"></div>
+                    <div class="vein"></div>
                 </div>
-                
-                <div class="power-display">
-                    <div class="watts-number" id="wattsDisplay">0</div>
-                    <div class="watts-label">WATTS</div>
-                </div>
-                
-                <div class="info-row">
-                    <div class="info-item">
-                        <div id="ohmsValue" class="info-value">0.15</div>
-                        <div>Ω</div>
-                    </div>
-                    <div class="info-item">
-                        <div id="voltsValue" class="info-value">3.7</div>
-                        <div>V</div>
-                    </div>
-                    <div class="info-item">
-                        <div id="ampsValue" class="info-value">24.6</div>
-                        <div>A</div>
-                    </div>
+                <div class="iris">
+                    <div class="pupil"></div>
                 </div>
             </div>
 
-            <!-- Кнопки регулировки -->
-            <div class="control-buttons">
-                <div class="ctrl-btn up" id="plusBtn">+</div>
-                <div class="ctrl-btn down">-</div>
+            <!-- СЛЕЗА -->
+            <div class="tear" id="tear"></div>
+            <div class="tear-stream" id="tearStream"></div>
+
+            <!-- КРОВАВЫЕ КАПЛИ -->
+            <div class="blood-drops">
+                <div class="blood-drop"></div>
+                <div class="blood-drop"></div>
+                <div class="blood-drop"></div>
             </div>
-
-            <!-- Кнопка Fire -->
-            <div class="fire-btn" id="fireBtn"></div>
-
-            <!-- USB порт -->
-            <div class="usb-port"></div>
-
-            <!-- Пар -->
-            <div class="vapor-cloud" id="vaporCloud"></div>
         </div>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="main-content" id="mainContent">
         <div class="header">
-            <h1>VAPE SHOP 💨</h1>
-            <p>Премиальные жидкости</p>
+            <h1>VAPE SHOP 💀</h1>
+            <p>Кровавые жидкости</p>
         </div>
 
         <div class="products">
             <div class="product-card">
-                <div class="product-image">🫐</div>
+                <div class="product-image">🩸</div>
                 <div class="product-info">
-                    <div class="product-title">Blueberry Ice</div>
-                    <div class="product-nic">3mg / 50ml</div>
-                    <div class="product-price">450 ₽</div>
-                    <button class="add-to-cart">Добавить</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">🥭</div>
-                <div class="product-info">
-                    <div class="product-title">Mango Passion</div>
-                    <div class="product-nic">6mg / 100ml</div>
-                    <div class="product-price">650 ₽</div>
+                    <div class="product-title">Blood Ice</div>
+                    <div class="product-price">666 ₽</div>
                     <button class="add-to-cart">Добавить</button>
                 </div>
             </div>
@@ -447,61 +426,45 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // АНИМАЦИЯ ЗАГРУЗКИ
-        let watts = 0;
-        const target = 100;
-        const duration = 5000;
-        const step = 50;
-        const increment = target / (duration / step);
-
-        const wattsDisplay = document.getElementById('wattsDisplay');
-        const plusBtn = document.getElementById('plusBtn');
-        const vaporCloud = document.getElementById('vaporCloud');
-        const ohmsValue = document.getElementById('ohmsValue');
-        const voltsValue = document.getElementById('voltsValue');
-        const ampsValue = document.getElementById('ampsValue');
-
-        const timer = setInterval(() => {
-            watts += increment;
+        // ТАЙМЕР НА 3 СЕКУНДЫ
+        setTimeout(() => {
+            // Закрываем глаз
+            document.getElementById('closedEye').style.display = 'none';
             
-            if (watts >= target) {
-                watts = target;
-                clearInterval(timer);
-                
-                setTimeout(() => {
-                    document.getElementById('splash').classList.add('hidden');
-                    document.getElementById('mainContent').classList.add('visible');
-                    tg.HapticFeedback?.notificationOccurred('success');
-                }, 500);
-            }
-
-            // Обновление дисплея
-            wattsDisplay.textContent = Math.floor(watts);
+            // Открываем глаз с сосудами
+            const openEye = document.getElementById('openEye');
+            openEye.style.display = 'block';
+            openEye.classList.add('visible');
             
-            // Динамические показатели
-            ohmsValue.textContent = (0.12 + (watts / 1000)).toFixed(2);
-            voltsValue.textContent = (3.2 + (watts / 50)).toFixed(1);
-            ampsValue.textContent = (15 + (watts / 5)).toFixed(1);
-
-            // Эффекты
-            if (watts > 70) {
-                plusBtn.classList.add('active');
-            } else {
-                plusBtn.classList.remove('active');
+            // Кровавая слеза
+            document.getElementById('tear').classList.add('active');
+            document.getElementById('tearStream').classList.add('active');
+            
+            // ВИБРАЦИЯ И ТРЯСКА
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('heavy');
+                tg.HapticFeedback.impactOccurred('heavy');
+                tg.HapticFeedback.impactOccurred('heavy');
             }
-
-            if (watts > 80) {
-                vaporCloud.classList.add('active');
-            } else {
-                vaporCloud.classList.remove('active');
-            }
-
-            // Тактильная отдача
-            if (Math.floor(watts) % 10 === 0) {
-                tg.HapticFeedback?.impactOccurred('light');
-            }
-
-        }, step);
+            
+            // Тряска экрана
+            document.querySelector('.splash-screen').classList.add('shake');
+            
+            // Ещё одна вибрация через 0.3 сек
+            setTimeout(() => {
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('heavy');
+                }
+            }, 300);
+            
+            // Убираем тряску и показываем магазин
+            setTimeout(() => {
+                document.querySelector('.splash-screen').classList.remove('shake');
+                document.getElementById('splash').classList.add('hidden');
+                document.getElementById('mainContent').classList.add('visible');
+            }, 1500);
+            
+        }, 3000); // 3 секунды
     </script>
 </body>
-    </html>
+</html>
