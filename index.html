@@ -159,7 +159,7 @@
             100% { width: 100%; }
         }
 
-        /* Меню */
+        /* Затемнение для меню */
         .overlay {
             position: fixed;
             top: 0;
@@ -178,6 +178,7 @@
             opacity: 1;
         }
 
+        /* Боковое меню */
         .side-menu {
             position: fixed;
             top: 0;
@@ -195,6 +196,7 @@
             left: 0;
         }
 
+        /* Профиль в меню */
         .menu-profile {
             padding: 20px;
             text-align: center;
@@ -213,6 +215,7 @@
             justify-content: center;
             font-size: 40px;
             color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .profile-name {
@@ -232,14 +235,31 @@
             align-items: center;
             gap: 15px;
             cursor: pointer;
+            transition: background 0.2s;
             border-bottom: 1px solid #f0f0f0;
+        }
+
+        .menu-item:hover {
+            background: #f5f5f5;
         }
 
         .menu-icon {
             font-size: 22px;
             width: 30px;
+            text-align: center;
         }
 
+        .menu-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .menu-arrow {
+            margin-left: auto;
+            color: #999;
+        }
+
+        /* Кнопка меню */
         .menu-button {
             position: fixed;
             top: 20px;
@@ -267,6 +287,7 @@
             display: block;
         }
 
+        /* Корзина */
         .cart-icon {
             position: fixed;
             top: 20px;
@@ -300,6 +321,7 @@
             justify-content: center;
         }
 
+        /* Основной контент */
         .main-content {
             padding: 80px 15px 100px;
             transition: filter 0.3s;
@@ -331,6 +353,45 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* КАТЕГОРИИ ТОВАРОВ */
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding: 5px 0;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            padding: 12px 20px;
+            background: var(--tg-theme-secondary-bg-color, white);
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .category-btn.active {
+            background: var(--tg-theme-button-color, #40a7e3);
+            color: white;
+            border-color: var(--tg-theme-button-color, #40a7e3);
+            box-shadow: 0 4px 12px rgba(64, 167, 227, 0.3);
+        }
+
+        .category-btn:active {
+            transform: scale(0.95);
+        }
+
         .products {
             display: flex;
             flex-direction: column;
@@ -344,6 +405,11 @@
             display: flex;
             gap: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
         }
 
         .product-image {
@@ -365,18 +431,20 @@
         .product-title {
             font-size: 18px;
             font-weight: bold;
+            margin-bottom: 5px;
         }
 
         .product-nic {
             font-size: 14px;
             color: #666;
-            margin: 5px 0;
+            margin-bottom: 5px;
         }
 
         .product-price {
             font-size: 22px;
             font-weight: bold;
             color: var(--tg-theme-button-color, #40a7e3);
+            margin-bottom: 10px;
         }
 
         .add-to-cart {
@@ -386,11 +454,17 @@
             padding: 12px;
             border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
             width: 100%;
+            transition: opacity 0.2s;
         }
 
+        .add-to-cart:active {
+            opacity: 0.8;
+        }
+
+        /* Модальные окна */
         .modal {
             display: none;
             position: fixed;
@@ -416,6 +490,12 @@
             padding: 25px;
             max-height: 80vh;
             overflow-y: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-header {
@@ -435,6 +515,7 @@
         .close-btn {
             font-size: 30px;
             cursor: pointer;
+            opacity: 0.7;
         }
 
         .cart-item {
@@ -451,16 +532,23 @@
 
         .cart-item-title {
             font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .cart-item-nic {
+            font-size: 12px;
+            color: #666;
         }
 
         .cart-item-price {
             color: var(--tg-theme-button-color, #40a7e3);
             font-weight: bold;
+            font-size: 16px;
         }
 
         .remove-btn {
             color: red;
-            font-size: 20px;
+            font-size: 24px;
             padding: 5px 10px;
             cursor: pointer;
         }
@@ -468,6 +556,7 @@
         .cart-total {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin: 20px 0;
             padding: 15px 0;
             font-size: 20px;
@@ -503,6 +592,7 @@
             text-align: center;
             padding: 40px 20px;
             color: #999;
+            font-size: 18px;
         }
 
         .notification {
@@ -517,10 +607,43 @@
             font-size: 16px;
             z-index: 2000;
             display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .privacy-text {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .privacy-text h3 {
+            margin: 20px 0 10px;
+            color: #40a7e3;
+        }
+
+        .privacy-text p {
+            margin-bottom: 15px;
+        }
+
+        .privacy-text ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .privacy-text li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #40a7e3;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
+    <!-- ЗАГРУЗОЧНЫЙ ЭКРАН -->
     <div class="splash-screen" id="splash">
         <div class="container">
             <div class="smoke">
@@ -539,46 +662,71 @@
         </div>
     </div>
 
+    <!-- Затемнение -->
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
+    <!-- Боковое меню -->
     <div class="side-menu" id="sideMenu">
         <div class="menu-profile">
             <div class="profile-avatar" id="profileAvatar">👤</div>
             <div class="profile-name" id="profileName">Загрузка...</div>
             <div class="profile-phone" id="profilePhone"></div>
         </div>
+
         <div class="menu-item" onclick="openSupport()">
             <span class="menu-icon">🆘</span>
             <span class="menu-title">Поддержка</span>
+            <span class="menu-arrow">›</span>
         </div>
+
         <div class="menu-item" onclick="openPrivacy()">
             <span class="menu-icon">🔒</span>
             <span class="menu-title">Конфиденциальность</span>
+            <span class="menu-arrow">›</span>
+        </div>
+
+        <div class="menu-item" onclick="openAnonymous()">
+            <span class="menu-icon">🥷</span>
+            <span class="menu-title">Анонимность</span>
+            <span class="menu-arrow">›</span>
         </div>
     </div>
 
+    <!-- Кнопка меню -->
     <div class="menu-button" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
     </div>
 
+    <!-- Корзина -->
     <div class="cart-icon" onclick="openCart()">
         🛒
         <span class="cart-count" id="cartCount">0</span>
     </div>
 
+    <!-- Основной контент -->
     <div class="main-content" id="mainContent">
         <div class="notification" id="notification">✅ Товар добавлен в корзину!</div>
 
         <div class="header">
             <h1>VAPE SHOP 💨</h1>
-            <p>Премиальные жидкости</p>
+            <p>Премиальные жидкости и оборудование</p>
         </div>
 
+        <!-- КАТЕГОРИИ -->
+        <div class="categories" id="categories">
+            <button class="category-btn active" onclick="filterProducts('all')">🔥 Все товары</button>
+            <button class="category-btn" onclick="filterProducts('pods')">📱 POD системы</button>
+            <button class="category-btn" onclick="filterProducts('liquid')">💧 Жидкости</button>
+            <button class="category-btn" onclick="filterProducts('disposable')">⚡ Одноразки</button>
+        </div>
+
+        <!-- ТОВАРЫ -->
         <div class="products" id="products"></div>
     </div>
 
+    <!-- Модальное окно корзины -->
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -595,6 +743,7 @@
         </div>
     </div>
 
+    <!-- Модальное окно поддержки -->
     <div class="modal" id="supportModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -602,20 +751,74 @@
                 <span class="close-btn" onclick="closeSupport()">×</span>
             </div>
             <div style="text-align: center; padding: 20px;">
+                <p style="font-size: 18px; margin-bottom: 20px;">Свяжитесь с нами:</p>
                 <p>📱 Telegram: @vapeshop_support</p>
                 <p>📧 Email: support@vapeshop.com</p>
+                <p>⏰ Время работы: 24/7</p>
+                <p style="margin-top: 20px; color: #666;">Ответим в течение 5 минут</p>
             </div>
         </div>
     </div>
 
+    <!-- Модальное окно конфиденциальности -->
     <div class="modal" id="privacyModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>🔒 Конфиденциальность</h2>
                 <span class="close-btn" onclick="closePrivacy()">×</span>
             </div>
+            <div class="privacy-text">
+                <h3>Ваши данные под защитой</h3>
+                <p>Мы используем современные методы шифрования для защиты вашей личной информации.</p>
+                
+                <h3>Что мы собираем:</h3>
+                <ul>
+                    <li>✓ Только Telegram ID (для идентификации)</li>
+                    <li>✓ Историю заказов</li>
+                    <li>✓ Избранные товары</li>
+                </ul>
+
+                <h3>Что НЕ собираем:</h3>
+                <ul>
+                    <li>❌ Номер телефона</li>
+                    <li>❌ Геолокацию</li>
+                    <li>❌ Контакты</li>
+                </ul>
+
+                <div class="highlight">
+                    <strong>🥷 Анонимность гарантирована</strong>
+                    <p>Все заказы обрабатываются без привязки к личным данным. Только номер заказа и Telegram ID.</p>
+                </div>
+
+                <p style="font-size: 12px; color: #999; margin-top: 20px;">Последнее обновление: 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно анонимности -->
+    <div class="modal" id="anonymousModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🥷 Анонимность</h2>
+                <span class="close-btn" onclick="closeAnonymous()">×</span>
+            </div>
             <div style="padding: 20px;">
-                <p>Мы не собираем личные данные. Только Telegram ID для заказов.</p>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <span style="font-size: 60px;">🥷</span>
+                </div>
+                
+                <h3 style="margin-bottom: 15px;">Полная анонимность:</h3>
+                
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 15px;">✅ Без привязки к номеру</li>
+                    <li style="margin-bottom: 15px;">✅ Без запроса личных данных</li>
+                    <li style="margin-bottom: 15px;">✅ Чат удаляется после заказа</li>
+                    <li style="margin-bottom: 15px;">✅ Оплата без передачи данных</li>
+                </ul>
+
+                <div class="highlight" style="background: #f0f0f0;">
+                    <p style="font-weight: bold;">Ваш Telegram ID — единственный идентификатор, который мы храним.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -624,15 +827,27 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
+        // Загрузка 3 секунды
         setTimeout(() => {
             document.getElementById('splash').classList.add('hidden');
             document.getElementById('mainContent').classList.add('visible');
+            
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
         }, 3000);
 
+        // Данные пользователя из Telegram
         let user = tg.initDataUnsafe?.user || {};
+        
         document.getElementById('profileName').textContent = user.first_name || 'Пользователь';
-        document.getElementById('profilePhone').textContent = user.username ? '@' + user.username : '';
+        document.getElementById('profilePhone').textContent = user.username ? '@' + user.username : 'ID: ' + (user.id || 'скрыт');
+        
+        if (user.photo_url) {
+            document.getElementById('profileAvatar').innerHTML = `<img src="${user.photo_url}" style="width: 80px; height: 80px; border-radius: 50%;">`;
+        }
 
+        // Функции меню
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
@@ -663,14 +878,36 @@
             document.getElementById('privacyModal').classList.remove('active');
         }
 
+        function openAnonymous() {
+            closeMenu();
+            document.getElementById('anonymousModal').classList.add('active');
+        }
+
+        function closeAnonymous() {
+            document.getElementById('anonymousModal').classList.remove('active');
+        }
+
+        // ТОВАРЫ С КАТЕГОРИЯМИ
         const products = [
-            { id: 1, name: "Blueberry Ice", nic: "3mg / 50ml", price: 450, image: "🫐" },
-            { id: 2, name: "Mango Passion", nic: "6mg / 100ml", price: 650, image: "🥭" },
-            { id: 3, name: "Strawberry Kiwi", nic: "0mg / 60ml", price: 500, image: "🍓" },
-            { id: 4, name: "Watermelon Mint", nic: "3mg / 120ml", price: 750, image: "🍉" }
+            // POD системы
+            { id: 1, name: "Voopoo Drag 3", nic: "80W POD", price: 2990, image: "📱", category: "pods" },
+            { id: 2, name: "SMOK Nord 5", nic: "60W POD", price: 2490, image: "📱", category: "pods" },
+            { id: 3, name: "Uwell Caliburn", nic: "15W POD", price: 1590, image: "📱", category: "pods" },
+            
+            // Жидкости
+            { id: 4, name: "Blueberry Ice", nic: "3mg / 50ml", price: 450, image: "🫐", category: "liquid" },
+            { id: 5, name: "Mango Passion", nic: "6mg / 100ml", price: 650, image: "🥭", category: "liquid" },
+            { id: 6, name: "Strawberry Kiwi", nic: "0mg / 60ml", price: 500, image: "🍓", category: "liquid" },
+            { id: 7, name: "Watermelon Mint", nic: "3mg / 120ml", price: 750, image: "🍉", category: "liquid" },
+            
+            // Одноразки (ашки)
+            { id: 8, name: "HQD Cuvie", nic: "20mg / 600 тяг", price: 390, image: "⚡", category: "disposable" },
+            { id: 9, name: "Elf Bar 1500", nic: "20mg / 1500 тяг", price: 790, image: "⚡", category: "disposable" },
+            { id: 10, name: "Puff XXL", nic: "20mg / 4000 тяг", price: 1290, image: "⚡", category: "disposable" }
         ];
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentCategory = 'all';
 
         function saveCart() {
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -691,7 +928,8 @@
             const product = products.find(p => p.id === productId);
             cart.push(product);
             saveCart();
-            showNotification('✅ Товар добавлен!');
+            showNotification('✅ Товар добавлен в корзину!');
+            tg.HapticFeedback?.impactOccurred('light');
         }
 
         function removeFromCart(index) {
@@ -744,7 +982,7 @@
                     <div class="cart-item">
                         <div class="cart-item-info">
                             <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-nic">${item.nic}</div>
+                            <div class="cart-item-nic">${item.nic || ''}</div>
                         </div>
                         <div class="cart-item-price">${item.price} ₽</div>
                         <div class="remove-btn" onclick="removeFromCart(${index})">×</div>
@@ -756,20 +994,29 @@
             modalTotal.textContent = getTotal() + ' ₽';
         }
 
-        function checkout() {
-            if (cart.length === 0) {
-                tg.showAlert('Корзина пуста!');
-                return;
-            }
-            tg.showAlert('✅ Заказ оформлен!');
-            cart = [];
-            saveCart();
-            closeCartModal();
+        // ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ
+        function filterProducts(category) {
+            currentCategory = category;
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderProducts();
         }
 
         function renderProducts() {
             const container = document.getElementById('products');
-            products.forEach(product => {
+            container.innerHTML = '';
+
+            let filteredProducts = products;
+            if (currentCategory !== 'all') {
+                filteredProducts = products.filter(p => p.category === currentCategory);
+            }
+
+            filteredProducts.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
@@ -777,7 +1024,7 @@
                     <div class="product-info">
                         <div>
                             <div class="product-title">${product.name}</div>
-                            <div class="product-nic">${product.nic}</div>
+                            <div class="product-nic">${product.nic || ''}</div>
                             <div class="product-price">${product.price} ₽</div>
                         </div>
                         <button class="add-to-cart" onclick="addToCart(${product.id})">
@@ -789,6 +1036,40 @@
             });
         }
 
+        // ОФОРМЛЕНИЕ ЗАКАЗА (отправка в личку)
+        function checkout() {
+            if (cart.length === 0) {
+                tg.showAlert('Корзина пуста!');
+                return;
+            }
+
+            // Формируем текст заказа
+            let orderText = '🛍 *НОВЫЙ ЗАКАЗ*\n\n';
+            cart.forEach((item, i) => {
+                orderText += `${i+1}. ${item.name} - ${item.price}₽\n`;
+                if (item.nic) orderText += `   ${item.nic}\n`;
+            });
+            orderText += `\n💰 *ИТОГО: ${getTotal()} ₽*`;
+            orderText += `\n👤 От: @${user.username || 'пользователь'}`;
+
+            // Кодируем текст для ссылки
+            let encodedText = encodeURIComponent(orderText);
+            
+            // Открываем чат с админом (zerotydawn)
+            window.location.href = `https://t.me/zerotydawn?text=${encodedText}`;
+
+            // Показываем сообщение
+            tg.showAlert('✅ Заказ сформирован! Отправьте его в чат');
+
+            // Очищаем корзину
+            cart = [];
+            saveCart();
+            closeCartModal();
+            
+            tg.HapticFeedback?.notificationOccurred('success');
+        }
+
+        // Закрытие модалок по клику вне
         document.getElementById('cartModal').addEventListener('click', function(e) {
             if (e.target === this) closeCartModal();
         });
@@ -799,6 +1080,10 @@
         
         document.getElementById('privacyModal').addEventListener('click', function(e) {
             if (e.target === this) closePrivacy();
+        });
+        
+        document.getElementById('anonymousModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAnonymous();
         });
 
         renderProducts();
