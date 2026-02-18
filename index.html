@@ -4,15 +4,11 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <h1>Тест</h1>
-    <button onclick="test()">Отправить тест</button>
-
+    <button onclick="send()">ТЕСТ</button>
     <script>
         let tg = Telegram.WebApp;
-        tg.expand();
-
-        function test() {
-            tg.sendData("Тестовое сообщение");
+        function send() {
+            tg.sendData("тест");
             alert("Отправлено!");
         }
     </script>
