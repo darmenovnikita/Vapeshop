@@ -1,16 +1,809 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--tg-theme-bg-color, #f5f5f5);
+            overflow-x: hidden;
+        }
+
+        /* ЗАГРУЗОЧНЫЙ ЭКРАН */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0b0e14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: logoAppear 2.5s ease forwards;
+        }
+
+        .logo h1 {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+        }
+
+        .logo p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+        }
+
+        @keyframes logoAppear {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .smoke {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            filter: blur(8px);
+        }
+
+        .smoke-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            animation: smokeRise 8s infinite ease-in-out;
+        }
+
+        .smoke-particle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            left: -50px;
+            bottom: -100px;
+            animation-delay: 0s;
+        }
+
+        .smoke-particle:nth-child(2) {
+            width: 250px;
+            height: 250px;
+            right: -30px;
+            bottom: -80px;
+            animation-delay: 2s;
+        }
+
+        .smoke-particle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            left: 20%;
+            bottom: -60px;
+            animation-delay: 4s;
+        }
+
+        .smoke-particle:nth-child(4) {
+            width: 280px;
+            height: 280px;
+            right: 10%;
+            bottom: -120px;
+            animation-delay: 1s;
+        }
+
+        @keyframes smokeRise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 0.5; }
+            50% { transform: translateY(-200px) scale(1.5); opacity: 0.3; }
+            100% { transform: translateY(-400px) scale(2); opacity: 0; }
+        }
+
+        .progress {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2, #9b59b6);
+            animation: progress 3s ease forwards;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Меню */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: var(--tg-theme-secondary-bg-color, white);
+            z-index: 999;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+            padding: 20px 0;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-profile {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-phone {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .menu-icon {
+            font-size: 22px;
+            width: 30px;
+        }
+
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            background: var(--tg-theme-button-color, #40a7e3);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border: 2px solid white;
+        }
+
+        .menu-button span {
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--tg-theme-button-color, #40a7e3);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 11px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            padding: 80px 15px 100px;
+            transition: filter 0.3s;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        .main-content.blur {
+            filter: blur(2px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--tg-theme-secondary-bg-color, white);
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .products {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .product-card {
+            background: var(--tg-theme-secondary-bg-color, white);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .product-nic {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--tg-theme-button-color, #40a7e3);
+        }
+
+        .add-to-cart {
+            background: var(--tg-theme-button-color, #40a7e3);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--tg-theme-secondary-bg-color, white);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 30px;
+            padding: 25px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            color: var(--tg-theme-button-color, #40a7e3);
+        }
+
+        .close-btn {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: bold;
+        }
+
+        .cart-item-price {
+            color: var(--tg-theme-button-color, #40a7e3);
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            color: red;
+            font-size: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 15px 0;
+            font-size: 20px;
+            font-weight: bold;
+            border-top: 2px solid #eee;
+        }
+
+        .checkout-btn {
+            background: var(--tg-theme-button-color, #40a7e3);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .clear-btn {
+            background: transparent;
+            color: #999;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            z-index: 2000;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <button onclick="send()">ТЕСТ</button>
+    <div class="splash-screen" id="splash">
+        <div class="container">
+            <div class="smoke">
+                <div class="smoke-particle"></div>
+                <div class="smoke-particle"></div>
+                <div class="smoke-particle"></div>
+                <div class="smoke-particle"></div>
+            </div>
+            <div class="logo">
+                <h1>VAPE</h1>
+                <p>PREMIUM</p>
+            </div>
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-profile">
+            <div class="profile-avatar" id="profileAvatar">👤</div>
+            <div class="profile-name" id="profileName">Загрузка...</div>
+            <div class="profile-phone" id="profilePhone"></div>
+        </div>
+        <div class="menu-item" onclick="openSupport()">
+            <span class="menu-icon">🆘</span>
+            <span class="menu-title">Поддержка</span>
+        </div>
+        <div class="menu-item" onclick="openPrivacy()">
+            <span class="menu-icon">🔒</span>
+            <span class="menu-title">Конфиденциальность</span>
+        </div>
+    </div>
+
+    <div class="menu-button" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="cart-icon" onclick="openCart()">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="notification" id="notification">✅ Товар добавлен в корзину!</div>
+
+        <div class="header">
+            <h1>VAPE SHOP 💨</h1>
+            <p>Премиальные жидкости</p>
+        </div>
+
+        <div class="products" id="products"></div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛒 Корзина</h2>
+                <span class="close-btn" onclick="closeCartModal()">×</span>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <span>Итого:</span>
+                <span id="modalTotal">0 ₽</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">✅ Оформить заказ</button>
+            <button class="clear-btn" onclick="clearCart()">🗑 Очистить корзину</button>
+        </div>
+    </div>
+
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🆘 Поддержка</h2>
+                <span class="close-btn" onclick="closeSupport()">×</span>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <p>📱 Telegram: @vapeshop_support</p>
+                <p>📧 Email: support@vapeshop.com</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="privacyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔒 Конфиденциальность</h2>
+                <span class="close-btn" onclick="closePrivacy()">×</span>
+            </div>
+            <div style="padding: 20px;">
+                <p>Мы не собираем личные данные. Только Telegram ID для заказов.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let tg = Telegram.WebApp;
-        function send() {
-            tg.sendData("тест");
-            alert("Отправлено!");
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        setTimeout(() => {
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('visible');
+        }, 3000);
+
+        let user = tg.initDataUnsafe?.user || {};
+        document.getElementById('profileName').textContent = user.first_name || 'Пользователь';
+        document.getElementById('profilePhone').textContent = user.username ? '@' + user.username : '';
+
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('blur');
         }
+
+        function closeMenu() {
+            document.getElementById('sideMenu').classList.remove('open');
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('mainContent').classList.remove('blur');
+        }
+
+        function openSupport() {
+            closeMenu();
+            document.getElementById('supportModal').classList.add('active');
+        }
+
+        function closeSupport() {
+            document.getElementById('supportModal').classList.remove('active');
+        }
+
+        function openPrivacy() {
+            closeMenu();
+            document.getElementById('privacyModal').classList.add('active');
+        }
+
+        function closePrivacy() {
+            document.getElementById('privacyModal').classList.remove('active');
+        }
+
+        const products = [
+            { id: 1, name: "Blueberry Ice", nic: "3mg / 50ml", price: 450, image: "🫐" },
+            { id: 2, name: "Mango Passion", nic: "6mg / 100ml", price: 650, image: "🥭" },
+            { id: 3, name: "Strawberry Kiwi", nic: "0mg / 60ml", price: 500, image: "🍓" },
+            { id: 4, name: "Watermelon Mint", nic: "3mg / 120ml", price: 750, image: "🍉" }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            updateModalCart();
+        }
+
+        function showNotification(text) {
+            const notification = document.getElementById('notification');
+            notification.textContent = text;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            saveCart();
+            showNotification('✅ Товар добавлен!');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateModalCart();
+            showNotification('🗑 Товар удален');
+        }
+
+        function clearCart() {
+            if (cart.length === 0) return;
+            if (confirm('Очистить корзину?')) {
+                cart = [];
+                saveCart();
+                updateModalCart();
+                showNotification('🗑 Корзина очищена');
+            }
+        }
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        function getTotal() {
+            return cart.reduce((sum, item) => sum + item.price, 0);
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').classList.add('active');
+            updateModalCart();
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.remove('active');
+        }
+
+        function updateModalCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const modalTotal = document.getElementById('modalTotal');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-cart">🛒 Корзина пуста</div>';
+                modalTotal.textContent = '0 ₽';
+                return;
+            }
+
+            let html = '';
+            cart.forEach((item, index) => {
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.name}</div>
+                            <div class="cart-item-nic">${item.nic}</div>
+                        </div>
+                        <div class="cart-item-price">${item.price} ₽</div>
+                        <div class="remove-btn" onclick="removeFromCart(${index})">×</div>
+                    </div>
+                `;
+            });
+            
+            cartItemsDiv.innerHTML = html;
+            modalTotal.textContent = getTotal() + ' ₽';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                tg.showAlert('Корзина пуста!');
+                return;
+            }
+            tg.showAlert('✅ Заказ оформлен!');
+            cart = [];
+            saveCart();
+            closeCartModal();
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('products');
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image">${product.image}</div>
+                    <div class="product-info">
+                        <div>
+                            <div class="product-title">${product.name}</div>
+                            <div class="product-nic">${product.nic}</div>
+                            <div class="product-price">${product.price} ₽</div>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            Добавить в корзину
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('cartModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCartModal();
+        });
+        
+        document.getElementById('supportModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSupport();
+        });
+        
+        document.getElementById('privacyModal').addEventListener('click', function(e) {
+            if (e.target === this) closePrivacy();
+        });
+
+        renderProducts();
+        updateCartCount();
+        updateModalCart();
     </script>
 </body>
-</html>
+    </html>
