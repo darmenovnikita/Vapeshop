@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--tg-theme-bg-color, #f5f5f5);
+            background: var(--tg-theme-bg-color, #1a1e2b);
         }
 
-        /* ЗАГРУЗОЧНЫЙ ЭКРАН С ТВОИМ DRAG 3 */
+        /* ЗАГРУЗОЧНЫЙ ЭКРАН */
         .splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: #0a0f1e;
+            background: linear-gradient(145deg, #0f0f1a 0%, #1f1f2e 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s;
         }
 
         .splash-screen.hidden {
@@ -32,154 +36,244 @@
             pointer-events: none;
         }
 
-        .drag3-container {
+        /* DRAG 3 - ТОЧНАЯ КОПИЯ */
+        .drag3-device {
             position: relative;
-            width: 350px;
-            height: 700px;
-            background: url('https://i.ibb.co/spG6mvWz/6149162617.jpg') no-repeat center/contain;
-            /* ТВОЁ ФОТО! */
+            width: 280px;
+            height: 520px;
+            background: linear-gradient(145deg, #2a2a3a, #1a1a28);
+            border-radius: 50px 50px 70px 70px;
+            box-shadow: 
+                0 30px 40px rgba(0,0,0,0.8),
+                inset 0 -5px 15px rgba(0,0,0,0.9),
+                inset 0 5px 15px rgba(255,255,255,0.1);
+            border: 1px solid #3a3a4a;
         }
 
-        /* Анимированный экран (накладываем поверх фото) */
-        .screen-overlay {
+        /* КАРБОНОВАЯ ВСТАВКА */
+        .carbon-panel {
             position: absolute;
-            top: 230px;      /* Подогнано под твоё фото */
-            left: 85px;       /* Подогнано под твоё фото */
-            width: 180px;     /* Ширина экрана */
-            height: 100px;    /* Высота экрана */
-            background: rgba(0, 0, 0, 0.85);
-            border-radius: 12px;
-            border: 2px solid #4ade80;
+            top: 80px;
+            left: 15px;
+            right: 15px;
+            height: 260px;
+            background: linear-gradient(45deg, 
+                #1e1e2a 0%, 
+                #2a2a3a 25%, 
+                #1e1e2a 50%, 
+                #2a2a3a 75%, 
+                #1e1e2a 100%);
+            background-size: 50px 50px;
+            border-radius: 30px;
+            border: 2px solid #4a4a5a;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* ДИСПЛЕЙ DRAG 3 */
+        .drag-display {
+            position: absolute;
+            top: 110px;
+            left: 35px;
+            width: 190px;
+            height: 130px;
+            background: #0a0a12;
+            border-radius: 20px;
+            border: 3px solid #5a5a6a;
             box-shadow: 
-                inset 0 0 30px #4ade80,
-                0 0 30px rgba(74, 222, 128, 0.5);
+                inset 0 0 30px rgba(74, 222, 128, 0.3),
+                0 10px 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+            padding: 15px 10px;
+        }
+
+        /* ЗАСТАВКА VOOPOO */
+        .brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             color: #4ade80;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #4ade80;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .voopoo-logo {
+            color: #fbbf24;
+        }
+
+        /* ОСНОВНЫЕ ВАТТЫ */
+        .power-display {
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .watts-number {
+            font-size: 56px;
+            font-weight: 900;
+            color: #4ade80;
+            text-shadow: 0 0 20px #4ade80;
             font-family: 'Courier New', monospace;
+            line-height: 1;
+        }
+
+        .watts-label {
+            font-size: 14px;
+            color: #fbbf24;
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
+
+        /* ИНФОРМАЦИОННАЯ СТРОКА */
+        .info-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            color: #4ade80;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-value {
+            font-weight: bold;
+            font-size: 14px;
+            color: #fbbf24;
+        }
+
+        /* КНОПКИ УПРАВЛЕНИЯ */
+        .control-buttons {
+            position: absolute;
+            right: -15px;
+            top: 200px;
             display: flex;
             flex-direction: column;
+            gap: 15px;
+        }
+
+        .ctrl-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #3a3a4a, #2a2a3a);
+            border-radius: 12px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(2px);
-        }
-
-        .watts-big {
-            font-size: 52px;
-            font-weight: bold;
-            text-shadow: 0 0 20px #4ade80;
-            line-height: 1;
-            letter-spacing: 2px;
-        }
-
-        .watts-unit {
+            color: #fbbf24;
             font-size: 24px;
-            opacity: 0.8;
+            font-weight: bold;
+            box-shadow: 
+                3px 3px 5px rgba(0,0,0,0.8),
+                inset -1px -1px 2px rgba(0,0,0,0.5),
+                inset 1px 1px 2px rgba(255,255,255,0.1);
+            border: 1px solid #5a5a6a;
         }
 
-        .progress-bar {
-            width: 90%;
-            height: 6px;
-            background: #1a2a1a;
-            border-radius: 3px;
-            margin: 8px 0;
-            border: 1px solid #4ade80;
+        .ctrl-btn.up.active {
+            background: linear-gradient(145deg, #fbbf24, #d97706);
+            color: #000;
+            box-shadow: 0 0 30px #fbbf24;
         }
 
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #4ade80, #fbbf24, #ef4444);
-            border-radius: 3px;
-            transition: width 0.1s linear;
-            box-shadow: 0 0 15px #fbbf24;
-        }
-
-        .info-text {
-            font-size: 12px;
-            display: flex;
-            gap: 15px;
-            color: #4ade80;
-            text-shadow: 0 0 5px #4ade80;
-        }
-
-        /* Эффект кнопки Fire */
-        .fire-effect {
+        /* КНОПКА FIRE */
+        .fire-btn {
             position: absolute;
-            bottom: 150px;
+            bottom: 70px;
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
             height: 80px;
-            background: radial-gradient(circle, #ff0000, #ff8800, transparent);
+            background: radial-gradient(circle at 30% 30%, #ef4444, #b91c1c);
             border-radius: 50%;
-            filter: blur(15px);
-            opacity: 0;
-            animation: firePulse 1s infinite;
-            pointer-events: none;
-        }
-
-        .fire-effect.active {
-            opacity: 0.7;
+            box-shadow: 
+                0 15px 0 #7f1d1d,
+                0 20px 30px rgba(0,0,0,0.8),
+                inset 0 -5px 10px rgba(0,0,0,0.8),
+                inset 0 5px 15px rgba(255,255,255,0.3);
+            border: 2px solid #fbbf24;
+            cursor: pointer;
+            animation: firePulse 1.5s infinite;
         }
 
         @keyframes firePulse {
-            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.3; }
-            50% { transform: translateX(-50%) scale(1.3); opacity: 0.8; }
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
         }
 
-        /* Пар из дрипки */
-        .vapor {
+        .fire-btn::after {
+            content: '⚡';
             position: absolute;
-            top: 80px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 40px;
+            text-shadow: 0 0 20px #fbbf24;
+        }
+
+        /* USB ПОРТ */
+        .usb-port {
+            position: absolute;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.3);
+            width: 30px;
+            height: 10px;
+            background: #4a4a5a;
+            border-radius: 3px;
+            border: 1px solid #5a5a6a;
+        }
+
+        /* ПАР */
+        .vapor-cloud {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
             filter: blur(20px);
             border-radius: 50%;
             opacity: 0;
             pointer-events: none;
         }
 
-        .vapor.active {
-            animation: vaporRise 1.5s infinite;
+        .vapor-cloud.active {
+            animation: vapor 1.5s infinite;
         }
 
-        @keyframes vaporRise {
-            0% { 
-                opacity: 0;
-                transform: translateX(-50%) translateY(0) scale(1);
-            }
-            50% { 
-                opacity: 0.8;
-                transform: translateX(-50%) translateY(-50px) scale(2.5);
-            }
-            100% { 
-                opacity: 0;
-                transform: translateX(-50%) translateY(-120px) scale(4);
-            }
+        @keyframes vapor {
+            0% { opacity: 0; transform: translateX(-50%) translateY(0) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) translateY(-60px) scale(3); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-120px) scale(5); }
         }
 
-        /* Бренд */
-        .brand {
+        /* ЛОГОТИП DRAG */
+        .drag-logo {
             position: absolute;
-            bottom: -50px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: white;
-            font-size: 24px;
+            top: 20px;
+            right: 30px;
+            color: #fbbf24;
+            font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 15px #4ade80;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ (МАГАЗИН) */
+        /* ОСНОВНОЙ КОНТЕНТ */
         .main-content {
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s;
             padding: 15px;
+            color: white;
         }
 
         .main-content.visible {
@@ -190,14 +284,14 @@
             text-align: center;
             margin-bottom: 20px;
             padding: 20px;
-            background: white;
+            background: #2a2a3a;
             border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .header h1 {
             font-size: 28px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4ade80 0%, #fbbf24 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -209,23 +303,23 @@
         }
 
         .product-card {
-            background: white;
+            background: #2a2a3a;
             border-radius: 20px;
             padding: 15px;
             display: flex;
             gap: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #4a4a5a;
         }
 
         .product-image {
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4ade80 0%, #fbbf24 100%);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #0a0a12;
             font-size: 40px;
         }
 
@@ -236,27 +330,29 @@
         .product-title {
             font-size: 18px;
             font-weight: bold;
+            color: #4ade80;
         }
 
         .product-nic {
             font-size: 14px;
-            color: #666;
+            color: #a0a0b0;
             margin: 5px 0;
         }
 
         .product-price {
             font-size: 22px;
             font-weight: bold;
-            color: #40a7e3;
+            color: #fbbf24;
         }
 
         .add-to-cart {
-            background: #40a7e3;
-            color: white;
+            background: #4ade80;
+            color: #0a0a12;
             border: none;
             padding: 12px;
             border-radius: 12px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
@@ -266,31 +362,55 @@
 <body>
     <!-- ЗАГРУЗОЧНЫЙ ЭКРАН -->
     <div class="splash-screen" id="splash">
-        <div class="drag3-container">
-            <!-- Анимированный экран поверх фото -->
-            <div class="screen-overlay" id="screenOverlay">
-                <div class="watts-big" id="wattsDisplay">
-                    0<span class="watts-unit">W</span>
+        <div class="drag3-device">
+            <!-- Карбоновая вставка -->
+            <div class="carbon-panel"></div>
+            
+            <!-- Логотип Drag -->
+            <div class="drag-logo">DRAG 3</div>
+            
+            <!-- Дисплей -->
+            <div class="drag-display" id="display">
+                <div class="brand-header">
+                    <span>VOOPOO</span>
+                    <span class="voopoo-logo">⚡DRAG</span>
                 </div>
                 
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
+                <div class="power-display">
+                    <div class="watts-number" id="wattsDisplay">0</div>
+                    <div class="watts-label">WATTS</div>
                 </div>
                 
-                <div class="info-text">
-                    <span id="ohms">0.15Ω</span>
-                    <span id="volts">3.7V</span>
+                <div class="info-row">
+                    <div class="info-item">
+                        <div id="ohmsValue" class="info-value">0.15</div>
+                        <div>Ω</div>
+                    </div>
+                    <div class="info-item">
+                        <div id="voltsValue" class="info-value">3.7</div>
+                        <div>V</div>
+                    </div>
+                    <div class="info-item">
+                        <div id="ampsValue" class="info-value">24.6</div>
+                        <div>A</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Эффект кнопки Fire -->
-            <div class="fire-effect" id="fireEffect"></div>
-            
-            <!-- Пар -->
-            <div class="vapor" id="vaporEffect"></div>
+            <!-- Кнопки регулировки -->
+            <div class="control-buttons">
+                <div class="ctrl-btn up" id="plusBtn">+</div>
+                <div class="ctrl-btn down">-</div>
+            </div>
 
-            <!-- Бренд -->
-            <div class="brand">DRAG 3</div>
+            <!-- Кнопка Fire -->
+            <div class="fire-btn" id="fireBtn"></div>
+
+            <!-- USB порт -->
+            <div class="usb-port"></div>
+
+            <!-- Пар -->
+            <div class="vapor-cloud" id="vaporCloud"></div>
         </div>
     </div>
 
@@ -329,68 +449,59 @@
 
         // АНИМАЦИЯ ЗАГРУЗКИ
         let watts = 0;
-        const targetWatts = 100;
-        const duration = 5000; // 5 секунд
-        const interval = 50; // обновление каждые 50мс
-        const steps = duration / interval;
-        const increment = targetWatts / steps;
+        const target = 100;
+        const duration = 5000;
+        const step = 50;
+        const increment = target / (duration / step);
 
         const wattsDisplay = document.getElementById('wattsDisplay');
-        const progressFill = document.getElementById('progressFill');
-        const fireEffect = document.getElementById('fireEffect');
-        const vaporEffect = document.getElementById('vaporEffect');
-        const ohmsSpan = document.getElementById('ohms');
-        const voltsSpan = document.getElementById('volts');
+        const plusBtn = document.getElementById('plusBtn');
+        const vaporCloud = document.getElementById('vaporCloud');
+        const ohmsValue = document.getElementById('ohmsValue');
+        const voltsValue = document.getElementById('voltsValue');
+        const ampsValue = document.getElementById('ampsValue');
 
-        // Изменение сопротивления и вольтажа для реализма
-        const ohmsValues = [0.12, 0.15, 0.18, 0.20, 0.15, 0.13];
-        const voltsValues = [3.2, 3.5, 3.7, 4.0, 4.2, 3.8];
-
-        let timer = setInterval(() => {
+        const timer = setInterval(() => {
             watts += increment;
             
-            if (watts >= targetWatts) {
-                watts = targetWatts;
+            if (watts >= target) {
+                watts = target;
                 clearInterval(timer);
                 
                 setTimeout(() => {
                     document.getElementById('splash').classList.add('hidden');
                     document.getElementById('mainContent').classList.add('visible');
-                    
-                    if (tg.HapticFeedback) {
-                        tg.HapticFeedback.notificationOccurred('success');
-                    }
+                    tg.HapticFeedback?.notificationOccurred('success');
                 }, 500);
             }
 
             // Обновление дисплея
-            wattsDisplay.innerHTML = Math.floor(watts) + '<span class="watts-unit">W</span>';
-            progressFill.style.width = (watts / targetWatts * 100) + '%';
+            wattsDisplay.textContent = Math.floor(watts);
+            
+            // Динамические показатели
+            ohmsValue.textContent = (0.12 + (watts / 1000)).toFixed(2);
+            voltsValue.textContent = (3.2 + (watts / 50)).toFixed(1);
+            ampsValue.textContent = (15 + (watts / 5)).toFixed(1);
 
-            // Меняем показания для реализма
-            let index = Math.floor(watts / 20);
-            ohmsSpan.textContent = ohmsValues[index % ohmsValues.length] + 'Ω';
-            voltsSpan.textContent = voltsValues[index % voltsValues.length] + 'V';
-
-            // Эффекты на высоких ваттах
+            // Эффекты
             if (watts > 70) {
-                fireEffect.classList.add('active');
+                plusBtn.classList.add('active');
             } else {
-                fireEffect.classList.remove('active');
+                plusBtn.classList.remove('active');
             }
 
             if (watts > 80) {
-                vaporEffect.classList.add('active');
+                vaporCloud.classList.add('active');
             } else {
-                vaporEffect.classList.remove('active');
+                vaporCloud.classList.remove('active');
             }
 
             // Тактильная отдача
-            if (Math.floor(watts) % 10 === 0 && tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+            if (Math.floor(watts) % 10 === 0) {
+                tg.HapticFeedback?.impactOccurred('light');
             }
 
-        }, interval);
+        }, step);
     </script>
 </body>
-</html>
+    </html>
