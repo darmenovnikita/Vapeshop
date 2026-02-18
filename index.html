@@ -962,22 +962,29 @@
             modalTotal.textContent = getTotal() + ' ₽';
         }
 
+        // ИСПРАВЛЕННАЯ ФУНКЦИЯ ОФОРМЛЕНИЯ ЗАКАЗА
         function checkout() {
             if (cart.length === 0) {
                 tg.showAlert('Корзина пуста!');
                 return;
             }
 
+            // Отправляем данные боту
             tg.sendData(JSON.stringify({
                 type: 'order',
                 items: cart,
                 total: getTotal()
             }));
 
-            tg.showAlert('✅ Заказ отправлен!');
+            // Показываем сообщение пользователю
+            tg.showAlert('✅ Заказ отправлен! Ожидайте подтверждения');
+
+            // Очищаем корзину
             cart = [];
             saveCart();
             closeCartModal();
+            
+            // Вибрация для подтверждения
             tg.HapticFeedback?.notificationOccurred('success');
         }
 
@@ -1027,4 +1034,4 @@
         updateModalCart();
     </script>
 </body>
-    </html>
+</html>
