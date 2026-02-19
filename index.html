@@ -1083,38 +1083,26 @@
                 container.appendChild(card);
             });
         }
+// ОФОРМЛЕНИЕ ЗАКАЗА (отправка боту)
+function checkout() {
+    if (cart.length === 0) {
+        tg.showAlert('Корзина пуста!');
+        return;
+    }
 
-        // ОФОРМЛЕНИЕ ЗАКАЗА (отправка в личку)
-        function checkout() {
-            if (cart.length === 0) {
-                tg.showAlert('Корзина пуста!');
-                return;
-            }
+    // Отправляем данные боту
+    tg.sendData(JSON.stringify({ items: cart }));
 
-            // Формируем текст заказа
-            let orderText = '🛍 *НОВЫЙ ЗАКАЗ*\n\n';
-            cart.forEach((item, i) => {
-                orderText += `${i+1}. ${item.name} - ${item.price}₽\n`;
-                if (item.nic) orderText += `   ${item.nic}\n`;
-            });
-            orderText += `\n💰 *ИТОГО: ${getTotal()} ₽*`;
-            orderText += `\n👤 От: @${user.username || 'пользователь'}`;
+    // Показываем сообщение
+    tg.showAlert('✅ Заказ отправлен! Бот ответит вам');
 
-            // Кодируем текст для ссылки
-            let encodedText = encodeURIComponent(orderText);
-            
-            // Открываем чат с админом (zerotydawn)
-            window.location.href = `https://t.me/zerotydawn?text=${encodedText}`;
-
-            // Показываем сообщение
-            tg.showAlert('✅ Заказ сформирован! Отправьте его в чат');
-
-            // Очищаем корзину
-            cart = [];
-            saveCart();
-            closeCartModal();
-            
-            tg.HapticFeedback?.notificationOccurred('success');
+    // Очищаем корзину
+    cart = [];
+    saveCart();
+    closeCartModal();
+    
+    tg.HapticFeedback?.notificationOccurred('success');
+}
         }
 
         // Закрытие модалок по клику вне
