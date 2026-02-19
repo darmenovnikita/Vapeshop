@@ -1081,27 +1081,43 @@
                     </div>
                 `;
                 container.appendChild(card);
-            });
-        }
-// ОФОРМЛЕНИЕ ЗАКАЗА (отправка боту)
+// ОФОРМЛЕНИЕ ЗАКАЗА (отправка в Manybot)
 function checkout() {
     if (cart.length === 0) {
         tg.showAlert('Корзина пуста!');
         return;
     }
 
-    // Отправляем данные боту
-    tg.sendData(JSON.stringify({ items: cart }));
+    // Генерируем номер заказа (рандомный)
+    let orderNum = '#' + Math.floor(100000 + Math.random() * 900000);
+    
+    // Считаем итог
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    
+    // Формируем текст заказа
+    let orderText = `🛍 ЗАКАЗ ${orderNum}\n\n`;
+    cart.forEach((item, i) => {
+        orderText += `${i+1}. ${item.name} - ${item.price}₽\n`;
+        if (item.nic) orderText += `   ${item.nic}\n`;
+    });
+    orderText += `\n💰 ИТОГО: ${total}₽\n\n`;
+    orderText += `⚠️ ВНИМАНИЕ!\nДоставка оплачивается отдельно (зависит от пункта выдачи)`;
 
-    // Показываем сообщение
-    tg.showAlert('✅ Заказ отправлен! Бот ответит вам');
+    // Кодируем для ссылки
+    let encodedText = encodeURIComponent(orderText);
+    
+    // Открываем чат с ботом Manybot
+    window.location.href = `https://t.me/Shoponlyvape_bot?start=${encodedText}`;
 
+    tg.showAlert('✅ Заказ готов! Отправьте его боту');
+    
     // Очищаем корзину
     cart = [];
     saveCart();
     closeCartModal();
     
     tg.HapticFeedback?.notificationOccurred('success');
+};
 
         }
 
