@@ -1090,10 +1090,10 @@ function checkout() {
 
     // Генерируем номер заказа (рандомный)
     let orderNum = '#' + Math.floor(100000 + Math.random() * 900000);
-    
+
     // Считаем итог
     let total = cart.reduce((sum, item) => sum + item.price, 0);
-    
+
     // Формируем текст заказа
     let orderText = `🛍 ЗАКАЗ ${orderNum}\n\n`;
     cart.forEach((item, i) => {
@@ -1105,19 +1105,20 @@ function checkout() {
 
     // Кодируем для ссылки
     let encodedText = encodeURIComponent(orderText);
-    
+
     // Открываем чат с ботом Manybot
     window.location.href = `https://t.me/Shoponlyvape_bot?start=${encodedText}`;
 
     tg.showAlert('✅ Заказ готов! Отправьте его боту');
-    
+
     // Очищаем корзину
     cart = [];
     saveCart();
     closeCartModal();
     
     tg.HapticFeedback?.notificationOccurred('success');
-};
+}
+
 
         }
 
